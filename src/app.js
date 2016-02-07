@@ -12,7 +12,7 @@ var Vector2 = require('vector2');
 Firebase.INTERNAL.forceWebSockets();  
 var wind = new UI.Window();
 //function used to vibrate
-/*function vibrate(distance,side){
+function vibrate(distance,side){
     var length;
     if(side==0){
         length='double';
@@ -38,7 +38,7 @@ var wind = new UI.Window();
             break;
     }
     }
-*/
+
 
 var textfield = new UI.Text({
     position: new Vector2(0, 50),
@@ -58,22 +58,23 @@ wind.show();
 
 var childRef = ref.child('UserData').child('Pebble2961');
 childRef.on('value', function(value){
-    
-    var right = childRef.child('r');
-    var left = childRef.child('l');
+    var right = value.val().r;
+    var left = value.val().l;
+    side = (left<right)?'short':'double';
+    dist = (left<right)?left:right;
+    vibrate(dist,side);
+    for(var i=0;i<dist*1000;i++){
+        //ayylmao
+    }
     console.log("Left:"+left);
     console.log("Right:"+right);
     textfield.text("Left:"+left);
     textTwo.text("Right:"+right);
-    if((left+right)/2<=25){
-        Vibe.vibrate('long');
-    }
-    if((left+right)/2<=45){
-        Vibe.vibrate('double');
-    }
-    if((left+right)/2<=60){
-        Vibe.vibrate('short');
-    }
-    
-    });
+}
+);
+
+
+
+
+
 
