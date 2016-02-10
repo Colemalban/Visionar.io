@@ -11,35 +11,7 @@ var Vector2 = require('vector2');
   
 Firebase.INTERNAL.forceWebSockets();  
 var wind = new UI.Window();
-//function used to vibrate
-/*function vibrate(distance,side){
-    var length;
-    if(side==0){
-        length='double';
-    }
-    else{
-        length='short';
-    }
-    switch(distance){
-        case 1-20:
-            Vibe.vibrate(length);
-            break;
-        case 21-28:
-            Vibe.vibrate(length);
-            break;
-        case 29-36:
-            Vibe.vibrate(length);
-            break;
-        case 37-45:
-            Vibe.vibrate(length);
-            break;
-        case 46-54:
-            Vibe.vibrate(length);
-            break;
-    }
-    }*/
-
-
+//Add basic UI that displays incoming data
 var textfield = new UI.Text({
     position: new Vector2(0, 50),
     size: new Vector2(144, 30),
@@ -61,11 +33,12 @@ var textTwo = new UI.Text({
 });
 wind.add(textfield);
 wind.add(textTwo);
-//wind.add(nameText);
+
 wind.show();
+//Read in data from firebase
 var childRef = ref.child('UserData').child('Pebble2961');
 childRef.on('value', function(value){
-    
+    //set the point equal to the value and take the left and right numbers
    var point = value.val();
    var left=point.l;
    var right = point.r;
@@ -76,24 +49,8 @@ childRef.on('value', function(value){
     console.log("Left:"+left);
     console.log("Right:"+right);
     textfield.text("Left:"+left);
-    textTwo.text("Right:"+right);
-    /*
-    if(average<65){
-        if (left<right) {
-            Vibe.vibrate('short');
-            distance = left;
-        } else {
-            Vibe.vibrate('double');
-            distance = right;
-        }
-       
-        if(distance<65){
-            for(var i=(distance*distance*distance*distance*5);i>0;i--){
-            
-        }
-        }
-    }*/
-    
+    textTwo.text("Right:"+right); 
+	//Set of conditionals that decide on the type of vibration to use
     if(sum/2<=25){
         Vibe.vibrate('long'); 
         for(var i=0;i<1000000;i+=4){
@@ -115,7 +72,7 @@ childRef.on('value', function(value){
     }
     
     
-    
+    //Remove last data point
     childRef.remove();
 }
 );
